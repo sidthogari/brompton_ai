@@ -5,12 +5,14 @@ from pathlib import Path
 
 import build_section1
 import build_section2
+import draw_architecture
 
 OUT = Path(__file__).resolve().parent / "output"
 OUT.mkdir(exist_ok=True)
 
 
 def main():
+    draw_architecture.main()
     p1 = OUT / "Noli_Section1_Attribution_Architecture.pptx"
     p2 = OUT / "Noli_Section2_SelfService_Revenue_Platform.pptx"
     build_section1.build(p1)

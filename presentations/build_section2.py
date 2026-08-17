@@ -1,5 +1,7 @@
 """Section 2 — Self-service trusted revenue platform on the Section 1 architecture."""
 
+from pathlib import Path
+
 from pptx import Presentation
 from pptx.enum.text import PP_ALIGN
 from pptx.util import Inches, Pt
@@ -29,6 +31,7 @@ from theme import (
     card,
     content_chrome,
     pill,
+    poster_slide,
     rect,
     rrect,
     set_cell,
@@ -38,8 +41,9 @@ from theme import (
     _set_run,
 )
 
-TOTAL = 15
+TOTAL = 16
 SECTION = "Section 2  ·  Business solution"
+DIAGRAMS = Path(__file__).resolve().parent / "output" / "diagrams"
 
 
 def _prs():
@@ -176,9 +180,20 @@ def slide_architecture_delta(prs):
         "Snowflake (or Databricks SQL if that is the SoR). Not both.\n\nTime: 1.5 minutes.")
 
 
+def slide_finance_poster(prs):
+    poster_slide(
+        prs,
+        DIAGRAMS / "noli_finance_architecture.png",
+        "Walk today vs target vs how analysts work.\n\n"
+        "Same platform as Section 1 — we add a finance product on Gold, we do not rebuild ingest.\n\n"
+        "Point at the formula banner and agg_finance_day for the 3-second dashboard.\n\n"
+        "Time: 1.5 minutes. This is the picture they will remember.",
+    )
+
+
 def slide_model(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Finance data model", 5, TOTAL, SECTION)
+    content_chrome(s, "Finance data model", 6, TOTAL, SECTION)
     title_block(s, "Line grain for truth. Day grain for speed. Metrics for language.")
 
     models = [
@@ -211,7 +226,7 @@ def slide_model(prs):
 
 def slide_semantic(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Where net revenue is applied", 6, TOTAL, SECTION)
+    content_chrome(s, "Where net revenue is applied", 7, TOTAL, SECTION)
     title_block(s, "One formula, three interfaces — warehouse, BI, Excel")
 
     # Formula banner
@@ -242,7 +257,7 @@ def slide_semantic(prs):
 
 def slide_performance(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Why it is slow — and how we get under 3 seconds", 7, TOTAL, SECTION)
+    content_chrome(s, "Why it is slow — and how we get under 3 seconds", 8, TOTAL, SECTION)
     title_block(s, "10–15 seconds is a modelling problem wearing a BI costume")
 
     headers = ["Today", "Why it hurts", "Change"]
@@ -276,7 +291,7 @@ def slide_performance(prs):
 
 def slide_self_serve(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Ease of use for analysts", 8, TOTAL, SECTION)
+    content_chrome(s, "Ease of use for analysts", 9, TOTAL, SECTION)
     title_block(s, "Self-serve is a product: certified data, a catalogue, and a paved road")
 
     items = [
@@ -307,7 +322,7 @@ def slide_self_serve(prs):
 
 def slide_governance(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Governance that still feels easy", 9, TOTAL, SECTION)
+    content_chrome(s, "Governance that still feels easy", 10, TOTAL, SECTION)
     title_block(s, "Guardrails, not gatekeeping")
 
     bullet_card(s, Inches(0.45), Inches(1.4), Inches(6.2), Inches(5.4),
@@ -341,7 +356,7 @@ def slide_governance(prs):
 
 def slide_operating(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Operating model with a small data team", 10, TOTAL, SECTION)
+    content_chrome(s, "Operating model with a small data team", 11, TOTAL, SECTION)
     title_block(s, "Proactive reliability — the JD — without a 20-person platform group")
 
     rows = [
@@ -366,7 +381,7 @@ def slide_operating(prs):
 
 def slide_reverse_etl(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Activation — when, not first", 11, TOTAL, SECTION)
+    content_chrome(s, "Activation — when, not first", 12, TOTAL, SECTION)
     title_block(s, "Reverse ETL is in the JD. I would not start there.")
 
     card(s, Inches(0.45), Inches(1.4), Inches(6.2), Inches(2.5),
@@ -394,7 +409,7 @@ def slide_reverse_etl(prs):
 
 def slide_success(prs):
     s = blank_slide(prs)
-    content_chrome(s, "How we measure success", 12, TOTAL, SECTION)
+    content_chrome(s, "How we measure success", 13, TOTAL, SECTION)
     title_block(s, "If we cannot measure it, it is a rebrand of the same mess")
 
     kpis = [
@@ -424,7 +439,7 @@ def slide_success(prs):
 
 def slide_plan(prs):
     s = blank_slide(prs)
-    content_chrome(s, "90-day plan", 13, TOTAL, SECTION)
+    content_chrome(s, "90-day plan", 14, TOTAL, SECTION)
     title_block(s, "Sequence: stop the bleeding, certify one number, then open self-serve")
 
     phases = [
@@ -465,7 +480,7 @@ def slide_plan(prs):
 
 def slide_risks(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Risks and what I would refuse to do", 14, TOTAL, SECTION)
+    content_chrome(s, "Risks and what I would refuse to do", 15, TOTAL, SECTION)
     title_block(s, "Downsides, said out loud")
 
     items = [
@@ -486,7 +501,7 @@ def slide_risks(prs):
 
 def slide_close(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Close", 15, TOTAL, SECTION)
+    content_chrome(s, "Close", 16, TOTAL, SECTION)
     title_block(s, "The platform in one sentence")
 
     rrect(s, Inches(0.45), Inches(1.45), Inches(12.45), Inches(1.7), INK, adj=0.05)
@@ -526,6 +541,7 @@ def build(path):
     slide_problem(prs)
     slide_inconsistent_logic(prs)
     slide_architecture_delta(prs)
+    slide_finance_poster(prs)
     slide_model(prs)
     slide_semantic(prs)
     slide_performance(prs)

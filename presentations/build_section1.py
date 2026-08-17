@@ -4,6 +4,8 @@ from pptx import Presentation
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Inches, Pt
 
+from pathlib import Path
+
 from theme import (
     CARD,
     CLAY,
@@ -33,6 +35,7 @@ from theme import (
     content_chrome,
     fill_shape,
     pill,
+    poster_slide,
     rect,
     rrect,
     set_cell,
@@ -41,7 +44,8 @@ from theme import (
     title_block,
 )
 
-TOTAL = 16
+TOTAL = 18
+DIAGRAMS = Path(__file__).resolve().parent / "output" / "diagrams"
 SECTION = "Section 1  ·  Architecture"
 
 
@@ -256,9 +260,33 @@ def slide_architecture(prs):
         "Time: 2 minutes.")
 
 
+def slide_platform_poster(prs):
+    poster_slide(
+        prs,
+        DIAGRAMS / "noli_platform_architecture.png",
+        "This is the Brompton-style poster. Spend 90 seconds walking left to right.\n\n"
+        "Top bar = platform services. Sources → Fivetran/events → medallion + hash vault → "
+        "Snowflake serve → Power BI/Excel. Right rail is how we operate it.\n\n"
+        "Point at the red PII vault. Point at Gold as the only place Power BI is allowed.\n\n"
+        "If they say 'this looks like Brompton': same craft (medallion, hash, RTBF, Unity Catalog), "
+        "fitted to Noli's JD stack — Fivetran, dbt, Snowflake, Airflow — not a Databricks-only copy.\n\n"
+        "Time: 1.5 minutes. If short on time, this slide replaces the previous box diagram.",
+    )
+
+
+def slide_medallion_poster(prs):
+    poster_slide(
+        prs,
+        DIAGRAMS / "noli_medallion_logic.png",
+        "Five columns: Bronze, hash gate, Silver, Gold, PII vault. Then the lane rules.\n\n"
+        "The footer line is the soundbite: money/credit → dbt. Visual → Power BI. "
+        "Identifier → hash/consent.\n\nTime: 1 minute.",
+    )
+
+
 def slide_stack(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Why this stack — and why not one platform", 7, TOTAL, SECTION)
+    content_chrome(s, "Why this stack — and why not one platform", 9, TOTAL, SECTION)
     title_block(s, "Technology  ·  Why  ·  Downside",
                 "I would not rip-and-replace Noli's modern data stack. I would stop tools from overlapping.")
 
@@ -307,7 +335,7 @@ def slide_stack(prs):
 
 def slide_no_overlap(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Guardrails so the stack does not fight itself", 8, TOTAL, SECTION)
+    content_chrome(s, "Guardrails so the stack does not fight itself", 10, TOTAL, SECTION)
     title_block(s, "Each tool has a lane. Crossing lanes is how trust dies.")
 
     lanes = [
@@ -348,7 +376,7 @@ def slide_no_overlap(prs):
 
 def slide_elt(prs):
     s = blank_slide(prs)
-    content_chrome(s, "ETL vs ELT  ·  where logic lives", 9, TOTAL, SECTION)
+    content_chrome(s, "ETL vs ELT  ·  where logic lives", 11, TOTAL, SECTION)
     title_block(s, "ELT for meaning. A thin 'E-hash-L' for privacy.")
 
     # Two columns
@@ -412,7 +440,7 @@ def slide_elt(prs):
 
 def slide_ingestion(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Ingestion and the UTM contract", 10, TOTAL, SECTION)
+    content_chrome(s, "Ingestion and the UTM contract", 12, TOTAL, SECTION)
     title_block(s, "Stabilise the pipeline at the edge — then map what you cannot block")
 
     bullet_card(s, Inches(0.45), Inches(1.4), Inches(6.2), Inches(3.35),
@@ -458,7 +486,7 @@ def slide_ingestion(prs):
 
 def slide_model(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Data modelling", 11, TOTAL, SECTION)
+    content_chrome(s, "Data modelling", 13, TOTAL, SECTION)
     title_block(s, "Commercial grain is the order. Credit is a table, not a vibe.")
 
     # Facts / dims
@@ -497,7 +525,7 @@ def slide_model(prs):
 
 def slide_privacy(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Privacy, hashing, GDPR, clean rooms", 12, TOTAL, SECTION)
+    content_chrome(s, "Privacy, hashing, GDPR, clean rooms", 14, TOTAL, SECTION)
     title_block(s, "Keep the hash. Gold never sees raw email.")
 
     cards = [
@@ -525,7 +553,7 @@ def slide_privacy(prs):
 
 def slide_quality(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Quality assurance", 13, TOTAL, SECTION)
+    content_chrome(s, "Quality assurance", 15, TOTAL, SECTION)
     title_block(s, "Trust is a pipeline with gates — not a Slack thread")
 
     layers = [
@@ -559,7 +587,7 @@ def slide_quality(prs):
 
 def slide_scale(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Scaling to TBs per day", 14, TOTAL, SECTION)
+    content_chrome(s, "Scaling to TBs per day", 16, TOTAL, SECTION)
     title_block(s, "TBs/day is an incremental design problem, not a bigger cluster")
 
     items = [
@@ -588,7 +616,7 @@ def slide_scale(prs):
 
 def slide_plan(prs):
     s = blank_slide(prs)
-    content_chrome(s, "90-day plan and success", 15, TOTAL, SECTION)
+    content_chrome(s, "90-day plan and success", 17, TOTAL, SECTION)
     title_block(s, "Ship trust in slices — do not boil the lake")
 
     phases = [
@@ -639,7 +667,7 @@ def slide_plan(prs):
 
 def slide_close(prs):
     s = blank_slide(prs)
-    content_chrome(s, "Close", 16, TOTAL, SECTION)
+    content_chrome(s, "Close", 18, TOTAL, SECTION)
     title_block(s, "What I want you to remember")
 
     recs = [
@@ -675,6 +703,8 @@ def build(path):
     slide_root_causes(prs)
     slide_principles(prs)
     slide_architecture(prs)
+    slide_platform_poster(prs)
+    slide_medallion_poster(prs)
     slide_stack(prs)
     slide_no_overlap(prs)
     slide_elt(prs)

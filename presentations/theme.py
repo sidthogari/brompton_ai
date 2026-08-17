@@ -125,6 +125,14 @@ def set_notes(slide, text):
     notes.text = text
 
 
+def poster_slide(prs, image_path, notes):
+    """Full-bleed architecture poster (Brompton-style)."""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    slide.shapes.add_picture(str(image_path), 0, 0, SLIDE_W, SLIDE_H)
+    set_notes(slide, notes)
+    return slide
+
+
 def blank_slide(prs, dark=False):
     slide = prs.slides.add_slide(prs.slide_layouts[6])  # blank
     bg = CREAM if not dark else INK
