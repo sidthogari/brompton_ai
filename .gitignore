@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+.venv/
+presentations/output/previews/
